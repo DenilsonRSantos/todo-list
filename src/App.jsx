@@ -1,14 +1,14 @@
-import TodoForm from './components/TodoForm'
-import TodoList from './components/TodoList'
-import TodoFilters from './components/TodoFilters'
+import TodoForm from "./components/TodoForm";
+import TodoList from "./components/TodoList";
+import TodoFilter from "./components/TodoFilter";
 
 export default function App() {
   return (
-    <main className="app">
-      <h1>Lista de tarefas com REACT avançado</h1>
+    <div className="app-container">
+      <h1>Lista de Tarefas</h1>
       <TodoForm />
-      <TodoFilters />
+      <TodoFilter />
       <TodoList />
-    </main>
-  )
+    </div>
+  );
 }

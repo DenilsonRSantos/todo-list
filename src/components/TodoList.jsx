@@ -1,24 +1,15 @@
-import { useTodos } from '../hooks/useTodos'
-import TodoItem from './TodoItem'
-import { useMemo } from 'react'
+import { useRecoilValue } from "recoil";
+import { filteredTodoListState } from "../selectors/filteredTodoListState";
+import TodoItem from "./TodoItem";
 
 export default function TodoList() {
-  const { todos, filter } = useTodos()
-
-  const filteredTodos = useMemo(() => {
-    switch (filter) {
-      case 'concluidas':
-        return todos.filter(t => t.completed)
-      case 'pendentes':
-        return todos.filter(t => !t.completed)
-      default:
-        return todos
-    }
-  }, [todos, filter])
+  const todoList = useRecoilValue(filteredTodoListState);
 
   return (
-    <div>
-      {filteredTodos.map(todo => <TodoItem key={todo.id} todo={todo} />)}
+    <div className="todo-list">
+      {todoList.map((item) => (
+        <TodoItem key={item.id} item={item} />
+      ))}
     </div>
-  )
+  );
 }

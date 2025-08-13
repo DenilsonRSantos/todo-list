@@ -1,15 +1,32 @@
-import React from 'react'
-import { useTodos } from '../hooks/useTodos'
+import { useRecoilState } from "recoil";
+import { todoListState } from "../atoms/todoListState";
 
-function TodoItem({ todo }) {
-  const { toggleTodo, removeTodo } = useTodos()
+export default function TodoItem({ item }) {
+  const [list, setList] = useRecoilState(todoListState);
+
+  const toggleComplete = () => {
+    setList(
+      list.map((t) =>
+        t.id === item.id ? { ...t, isComplete: !t.isComplete } : t
+      )
+    );
+  };
+
+  const removeItem = () => {
+    setList(list.filter((t) => t.id !== item.id));
+  };
 
   return (
-    <div className={`todo-item ${todo.completed ? 'completed' : ''}`}>
-      <span onClick={() => toggleTodo(todo.id)}>{todo.text}</span>
-      <button onClick={() => removeTodo(todo.id)}>Remover</button>
+    <div className="todo-item">
+      <input
+        type="checkbox"
+        checked={item.isComplete}
+        onChange={toggleComplete}
+      />
+      <span style={{ textDecoration: item.isComplete ? "line-through" : "" }}>
+        {item.text}
+      </span>
+      <button onClick={removeItem}>X</button>
     </div>
-  )
+  );
 }
-
-export default React.memo(TodoItem)

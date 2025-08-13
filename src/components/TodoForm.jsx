@@ -1,22 +1,28 @@
-import { useState } from 'react'
-import { useTodos } from '../hooks/useTodos'
+import { useState } from "react";
+import { useSetRecoilState } from "recoil";
+import { todoListState } from "../atoms/todoListState";
 
 export default function TodoForm() {
-  const [text, setText] = useState('')
-  const { addTodo } = useTodos()
+  const [text, setText] = useState("");
+  const setTodoList = useSetRecoilState(todoListState);
 
-  const handleSubmit = e => {
-    e.preventDefault()
-    if (text.trim()) {
-      addTodo(text)
-      setText('')
-    }
-  }
+  const addItem = () => {
+    if (!text.trim()) return;
+    setTodoList((oldList) => [
+      ...oldList,
+      { id: Date.now(), text, isComplete: false },
+    ]);
+    setText("");
+  };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" value={text} onChange={e => setText(e.target.value)} placeholder="Nova tarefa" />
-      <button type="submit">Adicionar</button>
-    </form>
-  )
+    <div className="todo-form">
+      <input
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="Nova tarefa"
+      />
+      <button onClick={addItem}>Adicionar</button>
+    </div>
+  );
 }
